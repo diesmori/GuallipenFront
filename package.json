@@ -27,7 +27,7 @@
     "style-loader": "0.20.1",
     "uglify-js": "3.3.9",
     "url-loader": "0.6.2",
-    "webpack": "^3.10.0",
+    "webpack": "^3.12.0",
     "webpack-dev-server": "2.11.1"
   },
   "dependencies": {
@@ -37,11 +37,11 @@
     "flag-icon-css": "2.9.0",
     "font-awesome": "4.7.0",
     "history": "4.7.2",
-    "moment": "^2.21.0",
+    "moment": "^2.27.0",
     "react": "16.2.0",
     "react-chartjs-2": "2.7.0",
     "react-dom": "16.2.0",
-    "react-moment": "^0.7.0",
+    "react-moment": "^0.7.9",
     "react-router-dom": "4.2.2",
     "react-transition-group": "2.2.1",
     "reactstrap": "5.0.0-beta",

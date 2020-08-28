@@ -12,27 +12,11 @@ class Superior extends Component {
         <div style={{ overflowY: "auto", height: window.innerHeight / 2.8 }}>
           {this.props.data.map((item, i) => {
             return (
-              <div>
-                <ListGroupItem>
-                  <div class="row">
-                    <div class="col">{item.cliente}</div>
-                    <div class="col-2">
-                      {moment(item.updatedAt).format("HH:mm")}
-                    </div>
-                  </div>
-                </ListGroupItem>
-                <ListGroupItem>
-                  <div class="row">
-                    <div class="col">{item.cliente}</div>
-                    <div class="col-2">
-                      {moment(item.updatedAt).format("HH:mm")}
-                    </div>
-                  </div>
-                </ListGroupItem>
-                <ListGroupItem>
-                  <div class="row">
-                    <div class="col">{item.cliente}</div>
-                    <div class="col-2">
+              <div key={i}>
+                <ListGroupItem key={i}>
+                  <div className="row">
+                    <div className="col">{item.cliente}</div>
+                    <div className="col-2">
                       {moment(item.updatedAt).format("HH:mm")}
                     </div>
                   </div>

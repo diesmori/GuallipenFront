@@ -13,7 +13,6 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    console.log(apiUri + "ingresados");
     fetch(apiUri + "ingresados")
       .then(r => r.json())
       .then(r => {
@@ -22,34 +21,56 @@ class Dashboard extends Component {
         });
         console.log(this.state.ingresados);
       });
+
+    fetch(apiUri + "liberados")
+      .then(r => r.json())
+      .then(r => {
+        this.setState({
+          liberados: r
+        });
+        console.log(this.state.liberados);
+      });
+    fetch(apiUri + "facturados")
+      .then(r => r.json())
+      .then(r => {
+        this.setState({
+          facturados: r
+        });
+        console.log(this.state.facturados);
+      });
   }
 
   render() {
-    if (!this.state.ingresados) return <div />;
+    if (
+      !this.state.ingresados ||
+      !this.state.liberados ||
+      !this.state.facturados
+    )
+      return <div />;
     return (
-      <div class="container">
-        <div class="row">
-          <div class="col">
+      <div className="container">
+        <div className="row">
+          <div className="col">
             <Superior title="Ingresadas" data={this.state.ingresados} />
           </div>
-          <div class="col">
-            <Superior title="Liberadas" data={[]} />
+          <div className="col">
+            <Superior title="Liberadas" data={this.state.liberados} />
           </div>
-          <div class="col">
-            <Superior title="Facturadas" data={[]} />
+          <div className="col">
+            <Superior title="Facturadas" data={this.state.facturados} />
           </div>
         </div>
-        <div class="row">
-          <div class="col">
+        <div className="row">
+          <div className="col">
             <Ruta title="Ruta 1" />
           </div>
-          <div class="col">
+          <div className="col">
             <Ruta title="Ruta 2" />
           </div>
-          <div class="col">
+          <div className="col">
             <Ruta title="Ruta 3" />
           </div>
-          <div class="col">
+          <div className="col">
             <Ruta title="Ruta 4" />
           </div>
         </div>

@@ -61,7 +61,7 @@ class Header extends Component {
         <h2>{this.state.now.format("HH:mm:ss")}</h2>
         <h2>$: {this.state.dolar.serie[0].valor} </h2>
         <h2>€: {this.state.euro.serie[0].valor} </h2>
-        <h2>Davis Graphics</h2>
+        <img src="./img/logo.png" height="80%" style={{ marginRight: 15 }} />
       </header>
     );
   }
