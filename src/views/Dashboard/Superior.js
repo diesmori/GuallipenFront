@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ListGroup, ListGroupItem } from "reactstrap";
+import Moment from "react-moment";
 var moment = require("moment");
 
 class Superior extends Component {
@@ -7,7 +8,7 @@ class Superior extends Component {
     return (
       <ListGroup>
         <ListGroupItem active>
-          <h2>{this.props.title}</h2>
+          <h2>{this.props.title + " (" + this.props.data.length + ")"}</h2>
         </ListGroupItem>
         <div style={{ overflowY: "auto", height: window.innerHeight / 2.8 }}>
           {this.props.data.map((item, i) => {
@@ -15,9 +16,11 @@ class Superior extends Component {
               <div key={i}>
                 <ListGroupItem key={i}>
                   <div className="row">
-                    <div className="col">{item.cliente}</div>
+                    <div className="col">{item.NombreCliente}</div>
                     <div className="col-2">
-                      {moment(item.updatedAt).format("HH:mm")}
+                      <Moment unix format="HH:MM">
+                        {item.Timestamps[item.Estado]}
+                      </Moment>
                     </div>
                   </div>
                 </ListGroupItem>

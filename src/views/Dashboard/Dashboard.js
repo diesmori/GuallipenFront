@@ -3,18 +3,33 @@ import Estado from "./Estado";
 import Superior from "./Superior";
 import Ruta from "./Ruta";
 import apiUri from "../../apiUri";
-import { getDailyPedidos } from "../../Firebase/helpers";
+import { getHoy } from "../../Firebase/helpers";
+import * as firebase from "firebase";
 
 const urlIndicadores = valor => "https://mindicador.cl/api/" + valor;
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      pedidos: {}
+    };
+    this.listenDailyPedidos = this.listenDailyPedidos.bind(this);
+  }
+
+  listenDailyPedidos(fecha) {
+    const that = this;
+    var ref = firebase.database().ref("Ordenes/" + fecha);
+    const ordenes = ref.on("value", function(snapshot) {
+      const value = snapshot.val();
+      if (value) {
+        that.setState({ pedidos: value });
+      }
+    });
   }
 
   componentDidMount() {
-    getDailyPedidos("2020,09,11");
+    this.listenDailyPedidos(getHoy());
     fetch(apiUri + "ingresados")
       .then(r => r.json())
       .then(r => {
@@ -43,23 +58,34 @@ class Dashboard extends Component {
   }
 
   render() {
-    if (
-      !this.state.ingresados ||
-      !this.state.liberados ||
-      !this.state.facturados
-    )
+    if (!this.state.ingresados || !this.state.liberados || !this.state.pedidos)
       return <div />;
     return (
       <div className="container">
         <div className="row">
           <div className="col">
-            <Superior title="Ingresadas" data={this.state.ingresados} />
+            <Superior
+              title="Ingresadas"
+              data={Object.values(this.state.pedidos).filter(
+                ({ Estado }) => Estado === 520
+              )}
+            />
           </div>
           <div className="col">
-            <Superior title="Liberadas" data={this.state.liberados} />
+            <Superior
+              title="Liberadas"
+              data={Object.values(this.state.pedidos).filter(
+                ({ Estado }) => Estado === 540
+              )}
+            />
           </div>
           <div className="col">
-            <Superior title="Facturadas" data={this.state.facturados} />
+            <Superior
+              title="Facturadas"
+              data={Object.values(this.state.pedidos).filter(
+                ({ Estado }) => Estado === 585
+              )}
+            />
           </div>
         </div>
         <div className="row">
