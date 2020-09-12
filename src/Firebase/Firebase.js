@@ -6,7 +6,7 @@ class Firebase {
     this.checkAuth();
   }
 
-  init = () => {
+  init() {
     if (!firebase.apps.length) {
       firebase.initializeApp({
         apiKey: "AIzaSyDBAQpjnWfllyYS0Lta8kHXymz2Z43D95o",
@@ -19,14 +19,14 @@ class Firebase {
         measurementId: "G-PBXDV09YGJ"
       });
     }
-  };
+  }
 
-  checkAuth = () => {
+  checkAuth() {
     firebase.auth().onAuthStateChanged(user => {
       if (!user) {
         firebase.auth().signInAnonymously();
       }
     });
-  };
+  }
 }
 export default new Firebase();

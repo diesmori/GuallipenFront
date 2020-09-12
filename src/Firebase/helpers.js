@@ -1,6 +1,6 @@
 import * as firebase from "firebase";
 
-export async function getHoy() {
+export function getHoy() {
   var mm = this.getMonth() + 1; // getMonth() is zero-based
   var dd = this.getDate();
 
@@ -11,7 +11,7 @@ export async function getHoy() {
   ].join(",");
 }
 
-export async function getDailyPedidos(fecha) {
+export function getDailyPedidos(fecha) {
   var ref = firebase.database().ref("Ordenes/" + fecha);
   const ordenes = ref.on("value", function(snapshot) {
     const value = snapshot.val();

@@ -3,6 +3,7 @@ import Estado from "./Estado";
 import Superior from "./Superior";
 import Ruta from "./Ruta";
 import apiUri from "../../apiUri";
+import { getDailyPedidos } from "../../Firebase/helpers";
 
 const urlIndicadores = valor => "https://mindicador.cl/api/" + valor;
 
@@ -13,6 +14,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    getDailyPedidos("2020,09,11");
     fetch(apiUri + "ingresados")
       .then(r => r.json())
       .then(r => {
