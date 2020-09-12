@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Estado from "./Estado";
 import Superior from "./Superior";
 import Ruta from "./Ruta";
-import apiUri from "../../apiUri";
 
 const urlIndicadores = valor => "https://mindicador.cl/api/" + valor;
 
@@ -13,64 +12,41 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    fetch(apiUri + "ingresados")
+    fetch(urlIndicadores("dolar"))
       .then(r => r.json())
       .then(r => {
         this.setState({
-          ingresados: r
+          dolar: r
         });
-        console.log(this.state.ingresados);
-      });
-
-    fetch(apiUri + "liberados")
-      .then(r => r.json())
-      .then(r => {
-        this.setState({
-          liberados: r
-        });
-        console.log(this.state.liberados);
-      });
-    fetch(apiUri + "facturados")
-      .then(r => r.json())
-      .then(r => {
-        this.setState({
-          facturados: r
-        });
-        console.log(this.state.facturados);
       });
   }
 
   render() {
-    if (
-      !this.state.ingresados ||
-      !this.state.liberados ||
-      !this.state.facturados
-    )
-      return <div />;
+    if (!this.state.dolar) return <div />;
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col">
-            <Superior title="Ingresadas" data={this.state.ingresados} />
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <Superior title="Ingresadas" />
           </div>
-          <div className="col">
-            <Superior title="Liberadas" data={this.state.liberados} />
+          <div class="col">
+            <Superior title="Liberadas" />
           </div>
-          <div className="col">
-            <Superior title="Facturadas" data={this.state.facturados} />
+          <div class="col">
+            <Superior title="Facturadas" />
           </div>
         </div>
-        <div className="row">
-          <div className="col">
+        <div class="row">
+          <div class="col">
             <Ruta title="Ruta 1" />
           </div>
-          <div className="col">
+          <div class="col">
             <Ruta title="Ruta 2" />
           </div>
-          <div className="col">
+          <div class="col">
             <Ruta title="Ruta 3" />
           </div>
-          <div className="col">
+          <div class="col">
             <Ruta title="Ruta 4" />
           </div>
         </div>
