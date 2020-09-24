@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import Estado from "./Estado";
 import Superior from "./Superior";
 import Ruta from "./Ruta";
-import apiUri from "../../apiUri";
 import { getHoy } from "../../Firebase/helpers";
 import * as firebase from "firebase";
-
-const urlIndicadores = valor => "https://mindicador.cl/api/" + valor;
 
 class Dashboard extends Component {
   constructor(props) {
@@ -30,36 +26,10 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.listenDailyPedidos(getHoy());
-    fetch(apiUri + "ingresados")
-      .then(r => r.json())
-      .then(r => {
-        this.setState({
-          ingresados: r
-        });
-        console.log(this.state.ingresados);
-      });
-
-    fetch(apiUri + "liberados")
-      .then(r => r.json())
-      .then(r => {
-        this.setState({
-          liberados: r
-        });
-        console.log(this.state.liberados);
-      });
-    fetch(apiUri + "facturados")
-      .then(r => r.json())
-      .then(r => {
-        this.setState({
-          facturados: r
-        });
-        console.log(this.state.facturados);
-      });
   }
 
   render() {
-    if (!this.state.ingresados || !this.state.liberados || !this.state.pedidos)
-      return <div />;
+    if (!this.state.pedidos) return <div />;
     return (
       <div className="container">
         <div className="row">

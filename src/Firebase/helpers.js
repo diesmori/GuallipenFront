@@ -3,7 +3,7 @@ import * as firebase from "firebase";
 export function getHoy() {
   const d = new Date();
   var mm = d.getMonth() + 1; // getMonth() is zero-based
-  var dd = d.getDate() - 1;
+  var dd = d.getDate() - 4;
 
   return [
     d.getFullYear(),
