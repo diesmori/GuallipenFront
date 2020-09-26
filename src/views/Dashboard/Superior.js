@@ -16,6 +16,7 @@ class Superior extends Component {
               <div key={i}>
                 <ListGroupItem key={i}>
                   <div className="row">
+                    <div className="col-2">{item.id}</div>
                     <div className="col">{item.NombreCliente}</div>
                     <div className="col-2">
                       <Moment unix format="HH:MM">

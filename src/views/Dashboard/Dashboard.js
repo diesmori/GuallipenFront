@@ -19,6 +19,9 @@ class Dashboard extends Component {
     const ordenes = ref.on("value", function(snapshot) {
       const value = snapshot.val();
       if (value) {
+        Object.keys(value).map(function(key, index) {
+          value[key].id = key;
+        });
         that.setState({ pedidos: value });
       }
     });
