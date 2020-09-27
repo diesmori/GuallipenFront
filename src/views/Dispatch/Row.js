@@ -8,6 +8,7 @@ import {
 } from "reactstrap";
 import Moment from "react-moment";
 var moment = require("moment");
+import { postPedidoATrans, deletePedidoATrans } from "../../Firebase/helpers";
 
 class Row extends Component {
   constructor(props) {
@@ -24,11 +25,19 @@ class Row extends Component {
     const old = this.state.dropdownOpen;
     this.setState({ dropdownOpen: !old });
   }
-  changeTransportista(nombre) {
+  changeTransportista(pedido, transportista) {
+    postPedidoATrans(pedido, transportista);
     this.setState({
-      transportistaSelected: nombre
+      transportistaSelected: transportista.Nombre
     });
   }
+  componentDidMount() {
+    if ("Transportista" in this.props.myKey)
+      this.setState({
+        transportistaSelected: this.props.myKey.Transportista.Nombre
+      });
+  }
+
   render() {
     const that = this;
     return (
@@ -48,7 +57,12 @@ class Row extends Component {
             </DropdownToggle>
             <DropdownMenu>
               <DropdownItem
-                onClick={() => that.changeTransportista("Transportista")}
+                onClick={() => {
+                  that.setState({
+                    transportistaSelected: "Transportista"
+                  });
+                  deletePedidoATrans(this.props.myKey);
+                }}
               >
                 --Ninguno--
               </DropdownItem>
@@ -60,7 +74,9 @@ class Row extends Component {
                   return (
                     <DropdownItem
                       key={index}
-                      onClick={() => that.changeTransportista(key.Nombre)}
+                      onClick={() =>
+                        that.changeTransportista(that.props.myKey, key)
+                      }
                     >
                       {key.Nombre}
                     </DropdownItem>

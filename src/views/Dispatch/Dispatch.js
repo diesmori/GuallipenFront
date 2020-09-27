@@ -37,7 +37,6 @@ class Dispatch extends Component {
       .ref("Ordenes/" + fecha)
       .orderByChild("Estado")
       .equalTo(585);
-
     const ordenes = ref.on("value", function(snapshot) {
       const value = snapshot.val();
       if (value) {
@@ -55,6 +54,9 @@ class Dispatch extends Component {
     const transportistas = ref.on("value", function(snapshot) {
       const value = snapshot.val();
       if (value) {
+        Object.keys(value).map(function(key, index) {
+          value[key].id = key;
+        });
         that.setState({ transportistas: value });
       }
     });
@@ -111,7 +113,17 @@ class Dispatch extends Component {
           {Object.values(this.state.transportistas).map(function(key, index) {
             return (
               <TabPane tabId={index + 2} key={index}>
-                <General name={key.Nombre} />
+                <General
+                  data={Object.values(that.state.pedidos).filter(
+                    ({ Transportista }) => {
+                      if (Transportista !== undefined) {
+                        if (Transportista.id === key.id) return true;
+                        else return false;
+                      } else return false;
+                    }
+                  )}
+                  transportistas={that.state.transportistas}
+                />
               </TabPane>
             );
           })}

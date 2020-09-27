@@ -11,3 +11,28 @@ export function getHoy() {
     (dd > 9 ? "" : "0") + dd
   ].join(",");
 }
+
+export function postPedidoATrans(pedido, transportista) {
+  firebase
+    .database()
+    .ref("/Ordenes/" + getHoy() + "/" + pedido.id)
+    .update({
+      Transportista: transportista
+    });
+}
+export function deletePedidoATrans(pedido) {
+  firebase
+    .database()
+    .ref("/Ordenes/" + getHoy() + "/" + pedido.id + "/Transportista")
+    .remove();
+}
+export function postPedidoATrans2(pedido, transportista) {
+  console.log(transportista);
+  const id = pedido.id;
+  firebase
+    .database()
+    .ref("/Transportistas/" + transportista.id + "/Ruta/Destinos/")
+    .update({
+      [id]: pedido
+    });
+}
