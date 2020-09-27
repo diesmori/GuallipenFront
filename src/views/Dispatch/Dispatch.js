@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 import General from "./General";
+import { getHoy } from "../../Firebase/helpers";
 import * as firebase from "firebase";
 
 class Dispatch extends Component {
@@ -21,10 +22,31 @@ class Dispatch extends Component {
     super(props);
     this.state = {
       activeTab: 1,
-      transportistas: {}
+      transportistas: {},
+      pedidos: {}
     };
     this.toggle = this.toggle.bind(this);
+    this.listenDailyPedidos = this.listenDailyPedidos.bind(this);
     this.listenTransportistas = this.listenTransportistas.bind(this);
+  }
+
+  listenDailyPedidos(fecha) {
+    const that = this;
+    var ref = firebase
+      .database()
+      .ref("Ordenes/" + fecha)
+      .orderByChild("Estado")
+      .equalTo(585);
+
+    const ordenes = ref.on("value", function(snapshot) {
+      const value = snapshot.val();
+      if (value) {
+        Object.keys(value).map(function(key, index) {
+          value[key].id = key;
+        });
+        that.setState({ pedidos: value });
+      }
+    });
   }
 
   listenTransportistas() {
@@ -33,7 +55,6 @@ class Dispatch extends Component {
     const transportistas = ref.on("value", function(snapshot) {
       const value = snapshot.val();
       if (value) {
-        console.log(value);
         that.setState({ transportistas: value });
       }
     });
@@ -45,6 +66,7 @@ class Dispatch extends Component {
 
   componentDidMount() {
     this.listenTransportistas();
+    this.listenDailyPedidos(getHoy());
   }
 
   render() {
@@ -54,17 +76,17 @@ class Dispatch extends Component {
         <Nav tabs>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === "1" })}
+              className={classnames({ active: this.state.activeTab === 1 })}
               onClick={() => {
                 this.toggle(1);
               }}
             >
-              Tab1
+              Sin Asignar
             </NavLink>
           </NavItem>
           {Object.values(this.state.transportistas).map(function(key, index) {
             return (
-              <NavItem>
+              <NavItem key={index}>
                 <NavLink
                   className={classnames({
                     active: that.state.activeTab === index + 2
@@ -81,11 +103,14 @@ class Dispatch extends Component {
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId={1}>
-            <General name="General" />
+            <General
+              data={this.state.pedidos}
+              transportistas={this.state.transportistas}
+            />
           </TabPane>
           {Object.values(this.state.transportistas).map(function(key, index) {
             return (
-              <TabPane tabId={index + 2}>
+              <TabPane tabId={index + 2} key={index}>
                 <General name={key.Nombre} />
               </TabPane>
             );
