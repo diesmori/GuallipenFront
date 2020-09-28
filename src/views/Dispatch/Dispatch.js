@@ -83,7 +83,7 @@ class Dispatch extends Component {
                 this.toggle(1);
               }}
             >
-              Sin Asignar
+              Todos los pedidos
             </NavLink>
           </NavItem>
           {Object.values(this.state.transportistas).map(function(key, index) {
@@ -108,6 +108,7 @@ class Dispatch extends Component {
             <General
               data={this.state.pedidos}
               transportistas={this.state.transportistas}
+              currentTransportista={null}
             />
           </TabPane>
           {Object.values(this.state.transportistas).map(function(key, index) {
@@ -123,6 +124,7 @@ class Dispatch extends Component {
                     }
                   )}
                   transportistas={that.state.transportistas}
+                  currentTransportista={key}
                 />
               </TabPane>
             );

@@ -15,7 +15,7 @@ class Row extends Component {
     super(props);
     this.state = {
       dropdownOpen: false,
-      transportistaSelected: "Transportista"
+      transportistaSelected: "--Ninguno--"
     };
     this.toggle = this.toggle.bind(this);
     this.changeTransportista = this.changeTransportista.bind(this);
@@ -59,7 +59,7 @@ class Row extends Component {
               <DropdownItem
                 onClick={() => {
                   that.setState({
-                    transportistaSelected: "Transportista"
+                    transportistaSelected: "--Ninguno--"
                   });
                   deletePedidoATrans(this.props.myKey);
                 }}

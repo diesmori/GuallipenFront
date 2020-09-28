@@ -3,7 +3,7 @@ import * as firebase from "firebase";
 export function getHoy() {
   const d = new Date();
   var mm = d.getMonth() + 1; // getMonth() is zero-based
-  var dd = d.getDate() - 4;
+  var dd = d.getDate() - 3;
 
   return [
     d.getFullYear(),
@@ -26,13 +26,14 @@ export function deletePedidoATrans(pedido) {
     .ref("/Ordenes/" + getHoy() + "/" + pedido.id + "/Transportista")
     .remove();
 }
-export function postPedidoATrans2(pedido, transportista) {
-  console.log(transportista);
-  const id = pedido.id;
+
+export function postRuta(pedidos, transportista) {
   firebase
     .database()
-    .ref("/Transportistas/" + transportista.id + "/Ruta/Destinos/")
-    .update({
-      [id]: pedido
+    .ref("/Rutas/" + getHoy())
+    .push({
+      Pedidos: pedidos,
+      Transportista: transportista,
+      Timestamp: Date.now()
     });
 }
