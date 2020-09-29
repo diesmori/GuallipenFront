@@ -1,32 +1,59 @@
 import React, { Component } from "react";
 import { ListGroup, ListGroupItem } from "reactstrap";
+import { getHoy } from "../../Firebase/helpers";
+import * as firebase from "firebase";
+import Moment from "react-moment";
+var moment = require("moment");
 
 class Ruta extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.listenRuta = this.listenRuta.bind(this);
+  }
+
+  listenRuta() {
+    const that = this;
+    var ref = firebase
+      .database()
+      .ref("Transportistas/" + this.props.data.id + "/Ruta");
+
+    ref.on("value", function(snapshot) {
+      const value = snapshot.val();
+      if (value) {
+        that.setState({ ruta: value });
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.listenRuta();
+  }
+
   render() {
+    const that = this;
     return (
       <ListGroup>
         <ListGroupItem active>
           <h2>{this.props.title}</h2>
         </ListGroupItem>
         <div style={{ overflowY: "auto", height: window.innerHeight / 2.8 }}>
-          <ListGroupItem>
-            <div className="row">
-              <div className="col">Porta ac consectetur ac</div>
-              <div className="col-3">18:47</div>
-            </div>
-          </ListGroupItem>
-          <ListGroupItem>
-            <div className="row">
-              <div className="col">Morbi leo risus</div>
-              <div className="col-3">09:38</div>
-            </div>
-          </ListGroupItem>
-          <ListGroupItem>Porta ac consectetur ac</ListGroupItem>
-          <ListGroupItem>Vestibulum at eros</ListGroupItem>
-          <ListGroupItem>Morbi leo risus</ListGroupItem>
-          <ListGroupItem>Porta ac consectetur ac</ListGroupItem>
-          <ListGroupItem>Vestibulum at eros</ListGroupItem>
-          <ListGroupItem>Morbi leo risus</ListGroupItem>
+          {this.state.ruta !== undefined
+            ? Object.values(this.state.ruta.Pedidos).map(function(key, index) {
+                return (
+                  <ListGroupItem key={index}>
+                    <div className="row">
+                      <div className="col">{key.NombreCliente}</div>
+                      <div className="col-3">
+                        <Moment unix format="HH:MM">
+                          {key.Timestamps[585]}
+                        </Moment>
+                      </div>
+                    </div>
+                  </ListGroupItem>
+                );
+              })
+            : null}
         </div>
       </ListGroup>
     );

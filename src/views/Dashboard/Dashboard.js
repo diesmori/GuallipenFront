@@ -8,9 +8,11 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pedidos: {}
+      pedidos: {},
+      transportistas: {}
     };
     this.listenDailyPedidos = this.listenDailyPedidos.bind(this);
+    this.listenTransportistas = this.listenTransportistas.bind(this);
   }
 
   listenDailyPedidos(fecha) {
@@ -27,8 +29,23 @@ class Dashboard extends Component {
     });
   }
 
+  listenTransportistas() {
+    const that = this;
+    var ref = firebase.database().ref("Transportistas");
+    const transportistas = ref.on("value", function(snapshot) {
+      const value = snapshot.val();
+      if (value) {
+        Object.keys(value).map(function(key, index) {
+          value[key].id = key;
+        });
+        that.setState({ transportistas: value });
+      }
+    });
+  }
+
   componentDidMount() {
     this.listenDailyPedidos(getHoy());
+    this.listenTransportistas();
   }
 
   render() {
@@ -62,18 +79,13 @@ class Dashboard extends Component {
           </div>
         </div>
         <div className="row">
-          <div className="col">
-            <Ruta title="Ruta 1" />
-          </div>
-          <div className="col">
-            <Ruta title="Ruta 2" />
-          </div>
-          <div className="col">
-            <Ruta title="Ruta 3" />
-          </div>
-          <div className="col">
-            <Ruta title="Ruta 4" />
-          </div>
+          {Object.values(this.state.transportistas).map(function(key, index) {
+            return (
+              <div className="col" key={index}>
+                <Ruta title={key.Nombre} data={key} />
+              </div>
+            );
+          })}
         </div>
       </div>
     );

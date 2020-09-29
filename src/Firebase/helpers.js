@@ -13,6 +13,7 @@ export function getHoy() {
 }
 
 export function postPedidoATrans(pedido, transportista) {
+  transportista.Ruta = null;
   firebase
     .database()
     .ref("/Ordenes/" + getHoy() + "/" + pedido.id)
@@ -28,12 +29,20 @@ export function deletePedidoATrans(pedido) {
 }
 
 export function postRuta(pedidos, transportista) {
+  transportista.Ruta = null;
   firebase
     .database()
     .ref("/Rutas/" + getHoy())
     .push({
       Pedidos: pedidos,
       Transportista: transportista,
+      Timestamp: Date.now()
+    });
+  firebase
+    .database()
+    .ref("/Transportistas/" + transportista.id + "/Ruta")
+    .update({
+      Pedidos: pedidos,
       Timestamp: Date.now()
     });
 }
