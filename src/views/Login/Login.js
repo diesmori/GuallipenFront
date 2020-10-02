@@ -7,10 +7,15 @@ import {
   Card,
   CardBody,
   Button,
+  Form,
+  FormGroup,
+  Label,
   Input,
+  FormText,
   InputGroup,
   InputGroupAddon,
-  InputGroupText
+  InputGroupText,
+  CardImg
 } from "reactstrap";
 
 import { signIn } from "../../Firebase/helpers";
@@ -37,39 +42,52 @@ class Login extends Component {
             <Col md="4">
               <CardGroup>
                 <Card className="p-6">
+                  <CardImg
+                    top
+                    src="./img/logo.png"
+                    alt="Logo Davis Graphics"
+                    style={{ width: "60%", alignSelf: "center", margin: 20 }}
+                  />
                   <CardBody>
                     <h1>Login</h1>
                     <p className="text-muted">
                       Plataforma de gestión Davis Graphics
                     </p>
-                    <InputGroup className="mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="icon-user"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        type="text"
-                        placeholder="Email"
-                        name="user"
-                        value={this.state.user}
-                        onChange={this.handleChange}
-                      />
-                    </InputGroup>
-                    <InputGroup className="mb-4">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="icon-lock"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        type="password"
-                        placeholder="Contraseña"
-                        name="pass"
-                        value={this.state.pass}
-                        onChange={this.handleChange}
-                      />
-                    </InputGroup>
+                    <Form>
+                      <FormGroup>
+                        <InputGroup className="mb-3">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="icon-user"></i>
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            type="email"
+                            placeholder="Email"
+                            name="user"
+                            value={this.state.user}
+                            onChange={this.handleChange}
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      <FormGroup>
+                        <InputGroup className="mb-4">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="icon-lock"></i>
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            type="password"
+                            placeholder="Contraseña"
+                            name="pass"
+                            value={this.state.pass}
+                            onChange={this.handleChange}
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                    </Form>
+
                     <Row>
                       <Col xs="6">
                         <Button
