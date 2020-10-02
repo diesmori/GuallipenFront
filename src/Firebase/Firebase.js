@@ -3,7 +3,7 @@ import firebase from "firebase";
 class Firebase {
   constructor() {
     this.init();
-    this.checkAuth();
+    // this.checkAuth();
   }
 
   init() {

@@ -1,13 +1,31 @@
 import React, { Component } from "react";
-import { Nav, NavItem, NavbarToggler, NavbarBrand } from "reactstrap";
+import {
+  Nav,
+  NavItem,
+  NavbarToggler,
+  NavbarBrand,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
+import * as firebase from "firebase";
 var moment = require("moment");
 const urlIndicadores = valor => "https://mindicador.cl/api/" + valor;
+
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      now: moment()
+      now: moment(),
+      dropdownOpen: false
     };
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    const old = this.state.dropdownOpen;
+    this.setState({ dropdownOpen: !old });
   }
 
   componentDidMount() {
@@ -61,7 +79,26 @@ class Header extends Component {
         <h2>{this.state.now.format("HH:mm:ss")}</h2>
         <h2>$: {this.state.dolar.serie[0].valor} </h2>
         <h2>€: {this.state.euro.serie[0].valor} </h2>
-        <img src="./img/logo.png" height="80%" style={{ marginRight: 15 }} />
+        <a href="http://davis.graphics/" target="_blank">
+          <img src="./img/logo.png" height={40} />
+        </a>
+        <ButtonDropdown
+          style={{ marginRight: 15 }}
+          isOpen={this.state.dropdownOpen}
+          toggle={this.toggle}
+        >
+          <DropdownToggle caret>Salir</DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem header>Desea salir?</DropdownItem>
+            <DropdownItem
+              onClick={() => {
+                firebase.auth().signOut();
+              }}
+            >
+              SALIR
+            </DropdownItem>
+          </DropdownMenu>
+        </ButtonDropdown>
       </header>
     );
   }
