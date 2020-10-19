@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Superior from "./Superior";
 import Ruta from "./Ruta";
-import { getHoy } from "../../Firebase/helpers";
+import { getHoy, getUbicacion, parseGeocerca } from "../../Firebase/helpers";
 import * as firebase from "firebase";
 
 class Dashboard extends Component {
@@ -9,7 +9,10 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       pedidos: {},
-      transportistas: {}
+      transportistas: {},
+      ubicacion: {
+        markers: { marker: [{ $: { id_auto: "hola", geocerca: "" } }] }
+      }
     };
     this.listenDailyPedidos = this.listenDailyPedidos.bind(this);
     this.listenTransportistas = this.listenTransportistas.bind(this);
@@ -43,15 +46,25 @@ class Dashboard extends Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    this.setState({ ubicacion: await getUbicacion() });
+    this.interval = await setInterval(
+      async () => this.setState({ ubicacion: await getUbicacion() }),
+      1000 * 30
+    );
+    //this.setState({ ubicacion: await getUbicacion() });
     this.listenDailyPedidos(getHoy());
     this.listenTransportistas();
   }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
   render() {
-    if (!this.state.pedidos) return <div />;
+    const that = this;
+    if (!this.state.pedidos || !this.state.ubicacion) return <div />;
     return (
-      <div className="container">
+      <div>
         <div className="row">
           <div className="col">
             <Superior
@@ -78,11 +91,18 @@ class Dashboard extends Component {
             />
           </div>
         </div>
+        <br />
         <div className="row">
           {Object.values(this.state.transportistas).map(function(key, index) {
             return (
               <div className="col" key={index}>
-                <Ruta title={key.Nombre} data={key} />
+                <Ruta
+                  title={key.Nombre}
+                  data={key}
+                  comuna={parseGeocerca(
+                    that.state.ubicacion[key.idAuto].geocerca
+                  )}
+                />
               </div>
             );
           })}

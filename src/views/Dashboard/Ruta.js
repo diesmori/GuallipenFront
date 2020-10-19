@@ -36,6 +36,7 @@ class Ruta extends Component {
       <ListGroup>
         <ListGroupItem active>
           <h2>{this.props.title}</h2>
+          <h3>{this.props.comuna}</h3>
         </ListGroupItem>
         <div style={{ overflowY: "auto", height: window.innerHeight / 2.8 }}>
           {this.state.ruta !== undefined

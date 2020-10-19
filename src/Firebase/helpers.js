@@ -12,6 +12,34 @@ export function getHoy() {
   ].join(",");
 }
 
+export async function getUbicacion() {
+  var parseString = require("xml2js").parseString;
+  const uri1 =
+    "https://backend.gpsglobal.cl/api/ubicacion?v=SU0885,SU0890,ST0524,ST0463,ST1620&f=";
+  const uri2 = "&api_token=b3e419cec0cbb806ad667efc79bd162f";
+  const today = getHoy().replace(/,/g, "-");
+  const uriFull = uri1 + today + uri2;
+  //Fetch data
+  let answer = {};
+  await fetch(uriFull)
+    .then(response => response.text())
+    .then(data =>
+      parseString(data, function(err, result) {
+        //Formatear bien
+        result.markers.marker.map(function(marker, index) {
+          answer[marker.$.id_auto] = marker.$;
+        });
+      })
+    );
+  return answer;
+}
+
+export function parseGeocerca(geocercas) {
+  const split = geocercas.split("#");
+  if (split.length === 1) return "Fuera";
+  else return split[1];
+}
+
 export function signIn(user, pass) {
   firebase
     .auth()
