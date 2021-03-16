@@ -47,6 +47,7 @@ class Dashboard extends Component {
   }
 
   async componentDidMount() {
+    // firebase.database().ref("Clientes/hola").set({ text: "hola" });
     this.setState({ ubicacion: await getUbicacion() });
     this.interval = await setInterval(
       async () => this.setState({ ubicacion: await getUbicacion() }),
@@ -94,17 +95,21 @@ class Dashboard extends Component {
         <br />
         <div className="row">
           {Object.values(this.state.transportistas).map(function(key, index) {
-            return (
-              <div className="col" key={index}>
-                <Ruta
-                  title={key.Nombre}
-                  data={key}
-                  comuna={parseGeocerca(
-                    that.state.ubicacion[key.idAuto].geocerca
-                  )}
-                />
-              </div>
-            );
+            try {
+              return (
+                <div className="col" key={index}>
+                  <Ruta
+                    title={key.Nombre}
+                    data={key}
+                    comuna={parseGeocerca(
+                      that.state.ubicacion[key.idAuto].geocerca
+                    )}
+                  />
+                </div>
+              );
+            } catch (error) {
+              return true;
+            }
           })}
         </div>
       </div>
