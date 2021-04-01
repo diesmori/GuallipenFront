@@ -37,6 +37,15 @@ class Ruta extends Component {
         <ListGroupItem active>
           <h2>{this.props.title}</h2>
           <h3>{this.props.comuna}</h3>
+          {this.state.ruta !== undefined ? (
+            <h6>
+              {" "}
+              Ruta del día{" "}
+              {moment
+                .unix(this.state.ruta.Timestamp / 1000)
+                .format("DD/MM/YYYY")}
+            </h6>
+          ) : null}
         </ListGroupItem>
         <div style={{ overflowY: "auto", height: window.innerHeight / 2.8 }}>
           {this.state.ruta !== undefined
@@ -44,7 +53,9 @@ class Ruta extends Component {
                 return (
                   <ListGroupItem key={index}>
                     <div className="row">
-                      <div className="col">{key.NombreCliente}</div>
+                      <div className="col">
+                        {key.NombreCliente.replace(/,/g, ".")}
+                      </div>
                       <div className="col-3">
                         <Moment unix format="HH:MM">
                           {key.Timestamps[585]}

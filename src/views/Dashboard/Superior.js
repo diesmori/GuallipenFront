@@ -17,7 +17,9 @@ class Superior extends Component {
                 <ListGroupItem key={i}>
                   <div className="row">
                     <div className="col-2">{item.id}</div>
-                    <div className="col">{item.NombreCliente}</div>
+                    <div className="col">
+                      {item.NombreCliente.replace(/,/g, ".")}
+                    </div>
                     <div className="col-2">
                       <Moment unix format="HH:MM">
                         {item.Timestamps[item.Estado]}

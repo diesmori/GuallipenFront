@@ -26,6 +26,7 @@ export async function getUbicacion() {
     .then(data =>
       parseString(data, function(err, result) {
         //Formatear bien
+        // console.log(result);
         result.markers.marker.map(function(marker, index) {
           answer[marker.$.id_auto] = marker.$;
         });

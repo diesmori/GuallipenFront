@@ -54,7 +54,7 @@ class Full extends Component {
                   <Redirect from="/" to="/dashboard" />
                 </Switch>
               </Container>
-              v1.1
+              v1.2
             </main>
           </div>
         </div>
