@@ -26,12 +26,20 @@ export async function getUbicacion() {
     .then(data =>
       parseString(data, function(err, result) {
         //Formatear bien
-        // console.log(result);
         result.markers.marker.map(function(marker, index) {
           answer[marker.$.id_auto] = marker.$;
         });
       })
     );
+  //Postear latitud y longitud en la DB
+  const array = Object.values(answer);
+  array.map(function(transportista) {
+    postLatLon(
+      Number(transportista.lat_),
+      Number(transportista.lon_),
+      transportista.id_auto
+    );
+  });
   return answer;
 }
 
@@ -52,6 +60,17 @@ export function signIn(user, pass) {
       console.log(errorMessage);
       // ...
     });
+}
+
+export function postLatLon(lat, lon, idTransportista) {
+  const query = firebase
+    .database()
+    .ref("Transportistas")
+    .orderByChild("idAuto")
+    .equalTo(idTransportista);
+  query.once("child_added", function(snapshot) {
+    snapshot.ref.update({ Latitud: lat, Longitud: lon });
+  });
 }
 
 export function postPedidoATrans(pedido, transportista) {
