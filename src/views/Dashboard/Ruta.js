@@ -51,7 +51,12 @@ class Ruta extends Component {
           {this.state.ruta !== undefined
             ? Object.values(this.state.ruta.Pedidos).map(function(key, index) {
                 return (
-                  <ListGroupItem key={index}>
+                  <ListGroupItem
+                    key={index}
+                    style={{
+                      backgroundColor: key.haLlegado ? "greenyellow" : null
+                    }}
+                  >
                     <div className="row">
                       <div className="col">
                         {key.NombreCliente.replace(/,/g, ".")}
